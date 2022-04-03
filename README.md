@@ -14,7 +14,7 @@ Copyright (C) 2022 [NSKernel](https://u.osu.edu/zhao-3289/) and [OSU SecLab](htt
 
 Other components included in this repository are also licensed under GPLv2.
 + Linux SGX Driver (See [`linux-sgx-driver/License.txt`](linux-sgx-driver/License.txt))
-+ `arch/x86/kvm/cpuid.c` from Linux (See [`kvm/LICENSE.txt`](kvm/LICENSE.txt))
++ `arch/x86/kvm/cpuid.c` and `arch/x86/kvm/Makefile` from Linux (See [`kvm/LICENSE.txt`](kvm/LICENSE.txt))
 
 ## Quick Start Guide
 
@@ -58,7 +58,7 @@ The reference commit we tested is  `222e2942a10e0174b5ef90439785641a956c45ad`.
 
 Follow the `README.md` to build the SEV environment. Install everything built EXCEPT FOR THE KERNEL. 
 
-Copy the 3 files under the `vSGX/kvm` folder to overwrite the corresponding ones in `AMDSEV/build/linux/arch/x86/kvm`. 
+Copy the 4 files under the `vSGX/kvm` folder to overwrite the corresponding ones in `AMDSEV/build/linux/arch/x86/kvm`. 
 
 ```
 cp vSGX/kvm/* AMDSEV/build/linux/arch/x86/kvm
