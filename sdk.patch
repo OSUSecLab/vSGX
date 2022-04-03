@@ -1,0 +1,126 @@
+From 0ae2b2a8fdb8edde5901fce8591896d36ceb66e7 Mon Sep 17 00:00:00 2001
+From: NSKernel <zhao.3289@osu.edu>
+Date: Sun, 3 Apr 2022 00:48:41 +0000
+Subject: [PATCH] Removed CPUID tests
+
+---
+ psw/enclave_common/sgx_enclave_common.cpp | 13 +++++++------
+ psw/urts/se_detect.cpp                    | 16 +++++++++-------
+ 2 files changed, 16 insertions(+), 13 deletions(-)
+
+diff --git a/psw/enclave_common/sgx_enclave_common.cpp b/psw/enclave_common/sgx_enclave_common.cpp
+index 81312233..2e8bf723 100644
+--- a/psw/enclave_common/sgx_enclave_common.cpp
++++ b/psw/enclave_common/sgx_enclave_common.cpp
+@@ -176,7 +176,7 @@ extern "C" void* get_enclave_base_address_from_address(void* target_address)
+ 
+ }
+ 
+-static func_get_launch_token_t get_launch_token_function(void)
++/*static func_get_launch_token_t get_launch_token_function(void)
+ {
+     if (get_launch_token_func == NULL) {
+         se_mutex_lock(&s_dlopen_mutex);
+@@ -199,7 +199,7 @@ static func_get_launch_token_t get_launch_token_function(void)
+     }
+ 
+     return get_launch_token_func;
+-}
++}*/
+ 
+ static void close_sofile(void)
+ {
+@@ -284,7 +284,7 @@ static uint32_t error_driver2api(int driver_error, int err_no)
+     return ret;
+ }
+ 
+-static uint32_t error_aesm2api(int aesm_error)
++/*static uint32_t error_aesm2api(int aesm_error)
+ {
+     uint32_t ret = ENCLAVE_UNEXPECTED;
+ 
+@@ -312,7 +312,7 @@ static uint32_t error_aesm2api(int aesm_error)
+ 
+     return ret;
+ }
+-
++*/
+ /* enclave_create()
+  * Parameters:
+  *      base_address [in, optional] - An optional preferred base address for the enclave.
+@@ -825,7 +825,7 @@ extern "C" bool COMM_API enclave_initialize(
+ 
+         enclave_css_t* enclave_css = (enclave_css_t*)enclave_init_sgx->sigstruct;
+         if (0 == enclave_css->header.hw_version) {
+-            func_get_launch_token_t func = get_launch_token_function();
++            /*func_get_launch_token_t func = get_launch_token_function();
+             if (func == NULL) {
+                 SE_TRACE(SE_TRACE_WARNING, "Failed to get sysmbol %s from %s.\n", SGX_GET_LAUNCH_TOKEN, SGX_LAUNCH_SO);
+                 if (enclave_error != NULL)
+@@ -838,7 +838,8 @@ extern "C" bool COMM_API enclave_initialize(
+                 if (enclave_error != NULL)
+                     *enclave_error = error_aesm2api(status);
+                 return false;
+-            }
++            }*/
++	    ((uint32_t *)launch_token)[0] = 1;
+         }
+ 
+         struct sgx_enclave_init initp = { 0, 0, 0 };
+diff --git a/psw/urts/se_detect.cpp b/psw/urts/se_detect.cpp
+index db9c8abd..8082dc6a 100644
+--- a/psw/urts/se_detect.cpp
++++ b/psw/urts/se_detect.cpp
+@@ -35,7 +35,7 @@
+ 
+ bool is_se_supported()
+ {
+-    int cpu_info[4] = {0, 0, 0, 0};
++/*    int cpu_info[4] = {0, 0, 0, 0};
+     __cpuidex(cpu_info, CPUID_FEATURE_FLAGS, 0);
+     if (!(cpu_info[1] & (1<<SE_FEATURE_SHIFT)))
+     {
+@@ -44,6 +44,7 @@ bool is_se_supported()
+     __cpuidex(cpu_info, SE_LEAF, 0);
+     if(!(cpu_info[0] & (1 << SE1_SHIFT)))
+         return false;
++ */
+     return true;
+ }
+ 
+@@ -72,13 +73,14 @@ bool try_read_xcr0(uint64_t *value)
+ 
+ bool get_plat_cap_by_cpuid(sgx_misc_attribute_t *se_misc_attr)
+ {
+-    int cpu_info[4] = {0, 0, 0, 0};
++    //int cpu_info[4] = {0, 0, 0, 0};
+ 
+     if(!is_se_supported())
+         return false;
+-    __cpuidex(cpu_info, SE_LEAF, 1);
++    //__cpuidex(cpu_info, SE_LEAF, 1);
+     //enclave capability
+-    se_misc_attr->secs_attr.flags = ((uint64_t)cpu_info[1] << 32) | cpu_info[0];
++    //Obviously we can do ANYTHING
++    se_misc_attr->secs_attr.flags = 0x36L; //((uint64_t)cpu_info[1] << 32) | cpu_info[0];
+ 
+     if(false == try_read_xcr0(&se_misc_attr->secs_attr.xfrm))
+     {
+@@ -89,11 +91,11 @@ bool get_plat_cap_by_cpuid(sgx_misc_attribute_t *se_misc_attr)
+     //If x-feature is supported and enabled by OS, we need make sure it is also supported in se.
+     else
+     {
+-        se_misc_attr->secs_attr.xfrm &= (((uint64_t)cpu_info[3] << 32) | cpu_info[2]);
++        se_misc_attr->secs_attr.xfrm &= SGX_XFRM_LEGACY; //(((uint64_t)cpu_info[3] << 32) | cpu_info[2]);
+     }
+     // use cpuid to get the misc_select
+-    __cpuidex(cpu_info, SE_LEAF, 0);
+-    se_misc_attr->misc_select = cpu_info[1];
++    //__cpuidex(cpu_info, SE_LEAF, 0);
++    se_misc_attr->misc_select = SGX_XFRM_LEGACY; //cpu_info[1];
+ 
+     return true;
+ }
+-- 
+2.17.1
+
