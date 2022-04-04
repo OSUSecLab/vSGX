@@ -8,7 +8,7 @@ All implementations except for existing code bases (Linux, Intel SGX SDK, etc.) 
 
 ## License
 
-This project is opensourced under GPLv2. See [`LICENSE.txt`](LICENSE.txt).
+This project is opensourced under GPLv2. See [`LICENSE`](LICENSE).
 
 Copyright (C) 2022 [NSKernel](https://u.osu.edu/zhao-3289/) and [OSU SecLab](https://seclab.engineering.osu.edu).
 
@@ -18,7 +18,7 @@ Other components included in this repository are also licensed under GPLv2.
 
 ## Quick Start Guide
 
-Disclaimer: vSGX IS NOT BUG FREE AND [THERE IS NO WARRANTY FOR THE CODE](LICENSE.txt). KERNEL CODE MODIFICATIONS IN IT MAY CAUSE KERNEL PANICS AND/OR DESTRUCTIVE CONSEQUENCES. DO NOT TEST THE CODE ON ANY MACHINE THAT YOU DO NOT WILLING TO WIPE.
+Disclaimer: vSGX IS NOT BUG FREE AND [THERE IS NO WARRANTY FOR THE CODE](LICENSE). KERNEL CODE MODIFICATIONS IN IT MAY CAUSE KERNEL PANICS AND/OR DESTRUCTIVE CONSEQUENCES. DO NOT TEST THE CODE ON ANY MACHINE THAT YOU ARE NOT WILLING TO WIPE.
 
 This project once was called 'EmuSGX'. Some of the naming in the code is still carrying this name.
 

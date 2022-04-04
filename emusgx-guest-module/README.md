@@ -8,7 +8,7 @@ All implementations except for existing code bases (Linux, Intel SGX SDK, etc.) 
 
 ## License
 
-This project is opensourced under GPLv2.  See [`../LICENSE.txt`](../LICENSE.txt).
+This project is opensourced under GPLv2.  See [`../LICENSE`](../LICENSE).
 
 Copyright (C) 2022 [NSKernel](https://u.osu.edu/zhao-3289/) and [OSU SecLab](https://seclab.engineering.osu.edu).
 
