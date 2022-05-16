@@ -1,0 +1,36 @@
+From 14b71ebe33a1f988187b722b450414f936912ab0 Mon Sep 17 00:00:00 2001
+From: NSKernel <zhao.3289@osu.edu>
+Date: Tue, 17 May 2022 05:10:26 +0800
+Subject: [PATCH] Fixed clflush uaccess problem
+
+---
+ kernel/emusgx/switchless_sync.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/kernel/emusgx/switchless_sync.c b/kernel/emusgx/switchless_sync.c
+index 9e426758b..43e284fc4 100644
+--- a/kernel/emusgx/switchless_sync.c
++++ b/kernel/emusgx/switchless_sync.c
+@@ -326,7 +326,9 @@ int _enclave_local emusgx_switchless_new_slot(void *addr, void *page_data, struc
+ 		// the page is already flushed from the switchless syncing list
+ 		
+ 		// Unmap the original addr from the memory to stop any writing to the page
++		__uaccess_begin();
+ 		clflush_cache_range(emusgx_switchless_pages[index].addr, 4096);
++		__uaccess_end();
+ 		// For some weird reason the mapped page is not the same as what we allocated
+ 		// So we will be using get_user_pages to get the real backing of the page
+ 		get_user_pages((unsigned long)emusgx_switchless_pages[index].addr, 1, 0, &in_kernel_page, NULL);
+@@ -441,7 +443,9 @@ void _enclave_local emusgx_sync_all_pages(char print, char force_sync) {
+ 		}
+ 
+ 		if (emusgx_switchless_pages[i].status == EMUSGX_SWITCHLESS_SLOT_INUSE) {
++			__uaccess_begin();
+ 			clflush_cache_range(emusgx_switchless_pages[i].addr, 4096);
++			__uaccess_end();
+ 			get_user_pages((unsigned long)emusgx_switchless_pages[i].addr, 1, 0, &in_kernel_page, NULL);
+ 			emusgx_sync_on_dirty(i, in_kernel_page, force_sync);
+ 			if (unlikely(print)) {
+-- 
+2.25.1
+

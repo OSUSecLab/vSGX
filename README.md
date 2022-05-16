@@ -86,6 +86,7 @@ Apply the EVM patch
 
 ```
 git am ~/vSGX/evm-kernel.patch
+git am ~/vSGX/evm-kernel-fix1.patch
 ```
 
 Create a build folder and use the given configuration `evm-config` to build the EVM kernel
