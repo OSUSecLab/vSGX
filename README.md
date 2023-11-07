@@ -10,7 +10,7 @@ All implementations except for existing code bases (Linux, Intel SGX SDK, etc.) 
 
 This project is opensourced under GPLv2. See [`LICENSE`](LICENSE).
 
-Copyright (C) 2022 [NSKernel](https://u.osu.edu/zhao-3289/) and [OSU SecLab](https://seclab.engineering.osu.edu).
+Copyright (C) 2022 [NSKernel](https://nskernel.org) and [OSU SecLab](https://seclab.engineering.osu.edu).
 
 Other components included in this repository are also licensed under GPLv2.
 + Linux SGX Driver (See [`linux-sgx-driver/License.txt`](linux-sgx-driver/License.txt))
